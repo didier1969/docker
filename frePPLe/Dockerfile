@@ -2,6 +2,10 @@ FROM ubuntu:16.04
 RUN apt-get -y -q update
 RUN apt-get -y -q upgrade
 
+RUN apt-get install software-properties-common
+RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+RUN apt-get update
 RUN apt-get -y install postgresql-9.6
 RUN su - postgres
 
