@@ -1,10 +1,22 @@
-FROM debian:latest
+FROM ubuntu:16.04
 RUN apt-get -y -q update
+RUN apt-get -y -q upgrade
 
-RUN apt-get -y install python3-pip libpython3.4
-RUN apt-get -y install libxerces-c3.1 apache2 libapache2-mod-wsgi-py3 python3-psycopg2
-RUN apt-get -y install vim wget
-RUN pip3 install openpyxl setuptools
+RUN apt-get -y install postgresql-9.6
+RUN su - postgres
+
+RUN psql template1 -c "create user frepple with password 'frepple'"
+RUN psql template1 -c "create database frepple encoding 'utf-8' owner frepple"
+RUN psql template1 -c "create database scenario1 encoding 'utf-8' owner frepple"
+RUN psql template1 -c "create database scenario2 encoding 'utf-8' owner frepple"
+RUN psql template1 -c "create database scenario3 encoding 'utf-8' owner frepple"
+RUN exit
+
+RUN sed -i 's/local\(\s*\)all\(\s*\)all\(\s*\)peer/local\1all\2all\3\md5/g' /etc/postgresql/9.*/main/pg_hba.conf
+RUN service postgresql restart
+
+RUN apt-get -y install python3 python3-pip
+RUN pip3 install -r requirements.txt
 
 ADD resources/ /resources 
 WORKDIR /resources
