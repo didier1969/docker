@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 RUN apt-get -y -q update
 RUN apt-get -y -q upgrade
 
-RUN apt-get install -y software-properties-common
+RUN apt-get install -y software-properties-common wget
 RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 RUN apt-get update
